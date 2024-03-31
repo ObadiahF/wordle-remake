@@ -13,9 +13,10 @@
             <h1 class="title">WORDLE REMAKE</h1>
                 <h6 class="subtitle">Made By Obadiah F</h6>
         </div>
+            <h2 id="error" style="color: red; display: none;">Error Msg</h2>
         <div class="content">
             <div class="input">
-                <div class="first">
+                <div class="first row">
                     <!--First Row-->
                 <div class="boxs" id="a1"></div>
                 <div class="boxs" id="a2"></div>
@@ -23,7 +24,7 @@
                 <div class="boxs" id="a4"></div>
                 <div class="boxs" id="a5"></div>
                 </div>
-                <div class="second">
+                <div class="second row">
                     <!--Second Row-->
                     <div class="boxs" id="b1"></div>
                     <div class="boxs" id="b2"></div>
@@ -31,7 +32,7 @@
                     <div class="boxs" id="b4"></div>
                     <div class="boxs" id="b5"></div>
                 </div>
-                <div class="third">
+                <div class="third row">
                     <!--third Row-->
                 <div class="boxs" id="c1"></div>
                 <div class="boxs" id="c2"></div>
@@ -39,7 +40,7 @@
                 <div class="boxs" id="c4"></div>
                 <div class="boxs" id="c5"></div>
                 </div>
-                <div class="fourth">
+                <div class="fourth row">
                     <!--fourth Row-->
                     <div class="boxs" id="d1"></div>
                     <div class="boxs" id="d2"></div>
@@ -47,7 +48,7 @@
                     <div class="boxs" id="d4"></div>
                     <div class="boxs" id="d5"></div>
                 </div>
-                <div class="fifth">
+                <div class="fifth row">
                     <!--fifth Row-->
                     <div class="boxs" id="e1"></div>
                     <div class="boxs" id="e2"></div>
@@ -56,6 +57,7 @@
                     <div class="boxs" id="e5"></div>
                 </div>
             </div>
+
             <div class="btn-layout">
                 <button class="character-btn" onclick="btnval(this.innerHTML)">Q</button>
                 <button class="character-btn" onclick="btnval(this.innerHTML)">W</button>
@@ -83,15 +85,17 @@
                 <button class="character-btn" onclick="btnval(this.innerHTML)">B</button>
                 <button class="character-btn" onclick="btnval(this.innerHTML)">N</button>
                 <button class="character-btn" onclick="btnval(this.innerHTML)">M</button>
-                
-                
+            </div>
+            <div style="width: 100%; display: flex; gap: 1rem; justify-content: center;">
+                <button class="restart" onclick="checkSubmission()">Submit</button>
+                <button class="restart" onclick="deleteLastCharacter()">Delete</button>
             </div>
             <input maxlength="1" autofocus id="input" onblur="this.focus()" type="text">
         </div>
         <div id="end">
             <h1 id="end-title">You Lose!</h1>
             <h6 id="word">The Word Was HELLO</h6>
-            <button id="restart" onclick="Restart()">Restart</button>
+            <button class="restart" id="restart" onclick="Restart()">Restart</button>
         </div>
     </div>
 </body>

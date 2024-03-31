@@ -12,50 +12,50 @@ body {
 }
 
 .center {
-    width: 100%;
     height: 100vh;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    padding: 0 2rem;
 }
 
 .content {
-    height: 90%;
-    width: 60%;
+    width: 100%;
     display: flex;
     justify-content: center;
-    margin: 0 auto;
-    position: absolute;
-    bottom: 0;
-    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    align-items: center;
 }
 
 .title {
     text-align: center;
     margin-bottom: 40px;
-    margin-right: 30px;
 }
 
 .subtitle {
-    margin-top: 50px;
     font-size: 20px;
-    position: absolute;
-    margin-right: 30px;
+    text-align: center;
 }
 
 
 .title-container {
     width: 60%;
     height: 20%;
-    display: flex;
-    justify-content: center;
-    position: absolute;
 }
 
 .input {
-    width: 60%;
-    height: 60px;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.row {
+    display: flex;
+    gap: 0.5rem;
 }
 
 #input {
@@ -64,7 +64,6 @@ body {
     border: none;
     font-size: 54px;
     text-align: center;
-    margin: 0 20px;
     background-color: rgb(243, 235, 235);
     z-index: 1;
     opacity: 0;
@@ -83,56 +82,8 @@ body {
     font-weight: bold;
 }
 
-.first {
-    width: 60%;
-    height: 60px;
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    position: absolute;
-}
-
-.second {
-    width: 60%;
-    height: 60px;
-    margin-top: 90px;
-    display: flex;
-    justify-content: center;
-    position: absolute;
-}
-
-.third {
-    width: 60%;
-    height: 60px;
-    margin-top: 160px;
-    display: flex;
-    justify-content: center;
-    position: absolute;
-}
-
-.fourth {
-    width: 60%;
-    height: 60px;
-    margin-top: 230px;
-    display: flex;
-    justify-content: center;
-    position: absolute;
-}
-
-.fifth {
-    width: 50%;
-    height: 60px;
-    margin-top: 300px;
-    display: flex;
-    justify-content: center;
-    position: absolute;
-}
-
 .btn-layout {
-    position: absolute;
-    bottom: 0;
-    height: 180px;
-    width: 90%;
+    width: 100%;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -151,6 +102,10 @@ body {
 #end {
     display: none;
     justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 2rem;
 }
 
 #end-title {
@@ -161,40 +116,37 @@ body {
 }
 
 #word {
-    position: absolute;
     text-align: center;
-    margin-top: 14rem;
     font-size: 24px;
 }
 
-#restart {
+.restart {
     width: 170px;
     height: 50px;
     background-color: grey;
     border: 2px solid black;
     cursor: pointer;
-    position: absolute;
-    margin-top: 20rem;
     color: white;
 }
 
-#restart:hover {
+.restart:hover {
     background-color: darkgrey;
 }
 
+button {
+    font-size: 24px;
+    
+}
+
 @media only screen and (max-width: 414px) {
-    .character-btn {
-        width: 20px;
-        height: 35px;
-        font-size: 15px;
-    }
     .boxs {
         width: 40px;
         height: 40px;
         margin: 0 5px;
         font-size: 18px;
     }
-    .first {
-        margin-bottom: 40px;
+
+    .btn-layout {
+        gap: 0.5rem;
     }
 }

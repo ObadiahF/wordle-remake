@@ -5,6 +5,38 @@ const content = document.querySelector(".content")
 const endScreen = document.getElementById("end")
 const endTitle = document.getElementById("end-title")
 const wordTitle = document.getElementById("word")
+const errorField = document.getElementById("error");
+
+const declareError = (err) => {
+    errorField.style.display = "block";
+    errorField.textContent = err;
+
+    characters = 0;
+    letters = [];
+
+    //reset boxs
+    for (let i = 1; i < 6; i++) {
+        const box = document.getElementById(letter[trys] + i.toString())
+        box.innerHTML = "";
+    }
+}
+
+const checkIfWordExists = async (word) => {
+    try {
+
+        const dictionaryResponse = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
+        const res = await dictionaryResponse.json();
+        
+        if (res.title === "No Definitions Found") {
+            return false
+        } else {
+            return true
+        }
+    } catch (e) {
+        console.log(e);
+        return true;
+    }
+};
 
 const letter = [
     "a",
@@ -45,107 +77,20 @@ function GetWordList(data) {
     word = wordlist.split('')
 }
 
-function update(e) {
-    input.onkeydown = function() {
+function update (e) {
+    errorField.style.display = "none";
+
+    input.onkeydown = () => {
         let key = event.keyCode || event.charCode;
         if(key == 8) {
          if (characters == 0) {
              return
          } else {
-            //console.log(characters);
-            box = document.getElementById(letter[trys] + characters.toString())
-            characters--
-            letters.splice(-1);
-            box.innerHTML = "";
+            deleteLastCharacter();
          }
         }
         if (key == 13) {
-            if (characters == 5) {
-                console.log("Submitted!")
-            //code for checking word
-
-            let correctIndex = 1;
-            //for yellow
-            for (let i = 0; i < 5; i++) {
-                if (word.includes(letters[i])) {
-                    correctsquare = document.getElementById(letter[trys] + correctIndex)
-                    correctsquare.style.border = "2px solid #DBA800";
-                    correctsquare.style.backgroundColor = "yellow";
-                    correctsquare.style.color = "white";
-                    for (const btn of document.querySelectorAll(".character-btn")) {
-                        if (btn.textContent.includes(letters[i])) {
-                            btn.style.backgroundColor = "yellow";
-                            btn.style.color = "white";
-                        }
-                    }
-                } else {
-                    correctsquare = document.getElementById(letter[trys] + correctIndex)
-                    correctsquare.style.border = "2px solid grey";
-                    correctsquare.style.backgroundColor = "darkgrey";
-                    correctsquare.style.color = "white";
-                    for (const btn of document.querySelectorAll(".character-btn")) {
-                        if (btn.textContent.includes(letters[i])) {
-                            btn.style.backgroundColor = "darkgrey";
-                            btn.style.color = "white";
-                        }
-                    }
-                }
-                correctIndex++
-              }
-            
-              //for green
-            correctIndex = 1;
-            for (let i = 0; i < 5; i++) {
-                if (letters[i] == word[i]) {
-                    correctsquare = document.getElementById(letter[trys] + correctIndex)
-                    correctsquare.style.border = "2px solid green";
-                    correctsquare.style.backgroundColor = "lime";
-                    correctsquare.style.color = "white";
-                    greenCounter++
-                    for (const btn of document.querySelectorAll(".character-btn")) {
-                        if (btn.textContent.includes(letters[i])) {
-                            btn.style.backgroundColor = "lime";
-                            btn.style.color = "white";
-                        }
-                    }
-                }
-                correctIndex++
-            }
-
-            setTimeout(() => {
-                if (greenCounter == 5) {
-                    content.style.display = "none";
-                    endScreen.style.display = "flex";
-                    trys++
-                    if (trys == 1) {
-                        wordTitle.innerHTML = `You Did It In ${trys} Attempt!`
-                    } else {
-                        wordTitle.innerHTML = `You Did It In ${trys} Attempts!`
-                    }
-                    endTitle.innerHTML = "You Win!"
-                }
-            }, 200)
-            //console.log(greenCounter);
-            
-
-            //reset for next row
-            setTimeout(() => {
-                if (trys == 4) {
-                    content.style.display = "none";
-                    endScreen.style.display = "flex";
-                    endTitle.innerHTML = "You Lose!"
-                    wordTitle.innerHTML = "The Correct Word Was " + word.join("");
-                } else {
-                    trys++  
-                    characters = 0;
-                    letters = [];
-                    greenCounter = 0;
-                }
-            }, 200)
-            
-            } else {
-                console.log("not filled out!")
-            }
+            checkSubmission();
         }
         };
         if (characters == 5) {
@@ -162,6 +107,108 @@ function update(e) {
         let box = document.getElementById(letter[trys] + characters.toString())
         box.innerHTML = letters[characters - 1].toUpperCase();
     //console.log(letters);
+}
+
+const deleteLastCharacter = () => {
+    box = document.getElementById(letter[trys] + characters.toString())
+    characters--
+    letters.splice(-1);
+    box.innerHTML = "";
+}
+
+const checkSubmission = async () => {
+    if (characters === 5) {
+        const wordString = letters.join('');
+        const isWord = await checkIfWordExists(wordString);
+
+        if (!isWord) {
+            declareError("Must input valid word!")
+            return;
+        }
+    //code for checking word
+
+    let correctIndex = 1;
+    //for yellow
+    for (let i = 0; i < 5; i++) {
+        if (word.includes(letters[i])) {
+            correctsquare = document.getElementById(letter[trys] + correctIndex)
+            correctsquare.style.border = "2px solid #DBA800";
+            correctsquare.style.backgroundColor = "yellow";
+            correctsquare.style.color = "white";
+            for (const btn of document.querySelectorAll(".character-btn")) {
+                if (btn.textContent.includes(letters[i])) {
+                    btn.style.backgroundColor = "yellow";
+                    btn.style.color = "white";
+                }
+            }
+        } else {
+            correctsquare = document.getElementById(letter[trys] + correctIndex)
+            correctsquare.style.border = "2px solid grey";
+            correctsquare.style.backgroundColor = "darkgrey";
+            correctsquare.style.color = "white";
+            for (const btn of document.querySelectorAll(".character-btn")) {
+                if (btn.textContent.includes(letters[i])) {
+                    btn.style.backgroundColor = "darkgrey";
+                    btn.style.color = "white";
+                }
+            }
+        }
+        correctIndex++
+      }
+    
+      //for green
+    correctIndex = 1;
+    for (let i = 0; i < 5; i++) {
+        if (letters[i] == word[i]) {
+            correctsquare = document.getElementById(letter[trys] + correctIndex)
+            correctsquare.style.border = "2px solid green";
+            correctsquare.style.backgroundColor = "lime";
+            correctsquare.style.color = "white";
+            greenCounter++
+            for (const btn of document.querySelectorAll(".character-btn")) {
+                if (btn.textContent.includes(letters[i])) {
+                    btn.style.backgroundColor = "lime";
+                    btn.style.color = "white";
+                }
+            }
+        }
+        correctIndex++
+    }
+
+    setTimeout(() => {
+        if (greenCounter == 5) {
+            content.style.display = "none";
+            endScreen.style.display = "flex";
+            trys++
+            if (trys == 1) {
+                wordTitle.innerHTML = `You Did It In ${trys} Attempt!`
+            } else {
+                wordTitle.innerHTML = `You Did It In ${trys} Attempts!`
+            }
+            endTitle.innerHTML = "You Win!"
+        }
+    }, 200)
+    //console.log(greenCounter);
+    
+
+    //reset for next row
+    setTimeout(() => {
+        if (trys == 4) {
+            content.style.display = "none";
+            endScreen.style.display = "flex";
+            endTitle.innerHTML = "You Lose!"
+            wordTitle.innerHTML = "The Correct Word Was " + word.join("");
+        } else {
+            trys++  
+            characters = 0;
+            letters = [];
+            greenCounter = 0;
+        }
+    }, 200)
+    
+    } else {
+        console.log("not filled out!")
+    }
 }
 
 
